@@ -1,0 +1,21 @@
+table .btn {
+  margin-left: 12px;
+}
+
+.campo_sucesso input{
+  border: 1px solid green!important;
+  box-shadow: inset 0 1px 1px rgba(163, 229, 97, 0.09);
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.campo_erro input{
+  border: 1px solid rgba(173, 32, 8, 0.93) !important;
+  box-shadow: inset 0 1px 1px rgba(227, 146, 115, 0.2);
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.bloco-erro{
+  color: rgba(173, 32, 8, 0.93);
+}
+
+.bloco-sucesso{
+  color: green;
+}
