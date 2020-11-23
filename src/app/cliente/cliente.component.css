@@ -19,3 +19,7 @@ table .btn {
 .bloco-sucesso{
   color: green;
 }
+
+select{
+  padding: 7.6px;
+}

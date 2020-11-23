@@ -15,6 +15,7 @@ import {HomeComponent} from './home/home.component';
 import {ClienteService} from "./cliente/cliente.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import {TextMaskModule} from "angular2-text-mask";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {FormsModule} from "@angular/forms";
   ],
   imports: [
     FormsModule,
+    TextMaskModule,
     BrowserModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),

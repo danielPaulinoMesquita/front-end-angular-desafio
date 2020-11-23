@@ -34,4 +34,8 @@ export class ClienteService {
   clienteSalvar(cliente: Cliente): Observable<Cliente> {
     return this.http.post<Cliente>(`${this.URL}`, cliente);
   }
+
+  clienteDeletar(id){
+    return this.http.delete(`${this.URL}/${id}`);
+  }
 }
