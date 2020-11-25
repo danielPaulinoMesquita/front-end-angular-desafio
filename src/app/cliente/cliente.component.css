@@ -20,6 +20,10 @@ table .btn {
   color: green;
 }
 
+.cursor {
+ cursor:pointer;
+}
+
 select{
   padding: 7.6px;
 }

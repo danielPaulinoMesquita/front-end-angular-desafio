@@ -27,7 +27,7 @@ export class ClienteService {
     return this.http.get<Cliente[]>(`${this.URL}`);
   }
 
-  clientesPorId(id: string): Observable<Cliente> {
+  clientesPorId(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.URL}/${id}`)
   }
 

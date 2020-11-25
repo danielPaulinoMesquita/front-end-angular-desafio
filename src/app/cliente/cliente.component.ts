@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Cliente, Telefone} from "./cliente.model";
 import {ClienteService} from "./cliente.service";
 import Swal from 'sweetalert2';
+import {map} from "rxjs/operators";
 
 
 @Component({
@@ -58,15 +59,29 @@ export class ClienteComponent implements OnInit {
   atualizar(cliente: Cliente){
     this.criarClienteSalvar(cliente);
 
+    this.clientes = this.clientes.map(cli => {
+      if (cli.id === this.cliente.id){
+        return cli = this.cliente;
+      }
+      return cli;
+    });
+
     this.clienteService.clienteAtualizar(this.cliente)
       .subscribe((response) => {
         this.cliente = response;
-        this.clientes.push(this.cliente);
-      })
+        this.clientes = this.clientes.map(cli => {
+          if (cli.id === this.cliente.id){
+            return cli = this.cliente;
+          }
+          return cli;
+        });
+        this.editar = false;
+
+    })
     this.mensagemAviso("Sucesso", "Atualização feita com sucesso", "success");
 
-    this.editar = false;
-    this.cliente= new Cliente();
+    this.inicializarTelefone();
+    this.inicializarCliente()
   }
 
   editarCliente(cliente: Cliente){
@@ -150,8 +165,9 @@ export class ClienteComponent implements OnInit {
   }
 
   criarClienteSalvar(cliente): void {
-    this.cliente = new Cliente();
-    this.cliente.id = cliente.id;
+    if (!this.editar){
+      this.cliente = new Cliente();
+    }
     this.cliente.nome = cliente.nome;
     this.cliente.emails.push(cliente.email);
     this.cliente.senha = cliente.senha;
