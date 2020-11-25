@@ -23,6 +23,9 @@ table .btn {
 .cursor {
  cursor:pointer;
 }
+.cursor:hover {
+ color:red;
+}
 
 select{
   padding: 7.6px;

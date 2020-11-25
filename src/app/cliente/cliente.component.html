@@ -65,7 +65,7 @@
              [class.campo_sucesso]="ipCep.valid && (ipCep.dirty || ipCep.touched)"
              [class.campo_erro]="!ipCep.valid && (ipCep.dirty || ipCep.touched)">
           <label for="inputSucess">Cep:</label>
-          <input #ipCep="ngModel" [(ngModel)]="cliente.cep" required name="cep" ngModel type="text" class="form-control"  placeholder="Cep">
+          <input (keyup)="buscarEnderecoCep($event)" #ipCep="ngModel" [(ngModel)]="cliente.cep" required name="cep" ngModel type="text" class="form-control"  placeholder="Cep">
           <span class="bloco-erro" *ngIf="!ipCep.valid && (ipCep.dirty || ipCep.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipCep.valid && (ipCep.dirty || ipCep.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>

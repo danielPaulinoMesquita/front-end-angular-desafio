@@ -195,4 +195,18 @@ export class ClienteComponent implements OnInit {
     }
   }
 
+  buscarEnderecoCep(event: any){
+
+    let cep = event.target.value;
+
+    if(cep.length ===8){
+      this.clienteService.cepPesquisar(cep).subscribe(res =>{
+        this.cliente.logradouro = res.logradouro;
+        this.cliente.complemento = res.complemento;
+        this.cliente.bairro = res.bairro;
+        this.cliente.uf = res.uf;
+      })
+    }
+  }
+
 }

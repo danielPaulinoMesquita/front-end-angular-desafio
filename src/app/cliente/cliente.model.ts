@@ -4,7 +4,7 @@ export class Cliente {
   senha: string
   cpf: string
   emails: string[]
-  cep: number
+  cep: string
   logradouro: string
   bairro: string
   cidade: string
@@ -14,6 +14,7 @@ export class Cliente {
   telefones: Telefone[]
 
   constructor() {
+    this.cep = "";
     this.telefones = [];
     this.emails = [];
   }

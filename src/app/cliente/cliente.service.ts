@@ -7,21 +7,9 @@ import {Cliente} from "./cliente.model";
 export class ClienteService {
 
   URL = "http://localhost:8080/clientes";
+  VIACEP = "https://viacep.com.br/ws";
 
   constructor(private http: HttpClient) {}
-
-  // Map e catch foi importado separadamente
-  // FILTRO para clientes
-  clientesFiltro(search?: string): Observable<Cliente[]> {
-
-    let params: HttpParams = undefined;
-    if (search) {
-      params = new HttpParams().set('q', search)
-    }
-
-    return this.http.get<Cliente[]>(`${this.URL}`, {params});
-
-  }
 
   clientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(`${this.URL}`);
@@ -41,5 +29,9 @@ export class ClienteService {
 
   clienteDeletar(id){
     return this.http.delete(`${this.URL}/${id}`);
+  }
+
+  cepPesquisar(cep?: string): Observable<any> {
+    return this.http.get(`${this.VIACEP}/${cep}/json`);
   }
 }
