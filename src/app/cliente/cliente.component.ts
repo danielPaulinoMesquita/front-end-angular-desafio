@@ -28,6 +28,8 @@ export class ClienteComponent implements OnInit {
     'CELULAR'
   ]
 
+  emails:string[];
+
   constructor(private clienteService: ClienteService) { }
 
   ngOnInit() {
@@ -71,6 +73,8 @@ export class ClienteComponent implements OnInit {
     this.clienteService.clientesPorId(cliente.id)
       .subscribe(response => {
       this.cliente = response;
+      this.telefones = this.cliente.telefones;
+      this.emails = this.cliente.emails;
       this.editar = true;
     })
 
@@ -117,6 +121,21 @@ export class ClienteComponent implements OnInit {
   adicionarTelefone(){
       this.telefones.push(this.telefone)
       this.telefone = new Telefone();
+  }
+
+  retirarTelefone(telefone: Telefone){
+    let indice = this.telefones.indexOf(telefone);
+    this.telefones.splice(indice,1);
+  }
+
+  adicionarEmail(){
+    this.telefones.push(this.telefone)
+    this.telefone = new Telefone();
+  }
+
+  retirarEmail(email: string){
+    let indice = this.emails.indexOf(email);
+    this.emails.splice(indice,1);
   }
 
   inicializarTelefone(){
