@@ -1,5 +1,6 @@
 <div class="panel panel-default">
-  <div class="panel-heading">Cadastro Cliente</div>
+  <div *ngIf="!editar" class="panel-heading">Cadastro Cliente</div>
+  <div *ngIf="editar" class="panel-heading">Edição Cliente</div>
   <div class="panel-body">
     {{form.valid}}
     {{form.value | json}}
@@ -11,7 +12,7 @@
              [class.campo_sucesso]="ipNome.valid && (ipNome.dirty || ipNome.touched)"
              [class.campo_erro]="!ipNome.valid && (ipNome.dirty || ipNome.touched)">
           <label for="inputSucess">Nome: *</label>
-          <input #ipNome="ngModel" required minlength="3" maxlength="100" name="nome" ngModel type="text" class="form-control"  placeholder="Digite o nome ...">
+          <input #ipNome="ngModel" [(ngModel)]="cliente.nome" required minlength="3" maxlength="100" name="nome" ngModel type="text" class="form-control"  placeholder="Digite o nome ...">
           <span class="bloco-erro" *ngIf="!ipNome.valid && (ipNome.dirty || ipNome.touched)"><i class="glyphicon glyphicon-remove"></i> Campo deve ter no min 3 caracteres e no max 100 caracteres</span>
           <span class="bloco-sucesso" *ngIf="ipNome.valid && (ipNome.dirty || ipNome.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -27,13 +28,13 @@
         </div>
         <div class="form-group">
           <label for="inputSucess">Senha: *</label>
-          <input name="senha" ngModel type="password" class="form-control" placeholder="Senha">
+          <input name="senha" [(ngModel)]="cliente.senha" ngModel type="password" class="form-control" placeholder="Senha">
         </div>
         <div class="form-group">
           <label for="inputSucess">Telefones: *</label>
           <div class="input-group">
             <div class="input-group-btn">
-              <select name="tipo" [(ngModel)]="telefone.tipo" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <select name="tipo" [(ngModel)]="telefone.tipoTelefone" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <option value="" disabled>Tipo</option>
                 <option *ngFor="let tipo of tipos" (click)="mudarMascara()">
                   {{ tipo }}
@@ -48,12 +49,15 @@
               </button>
             </div>
           </div>
+            <ul *ngFor="let tel of telefones">
+              <li>{{tel.numero}}  <i class="glyphicon glyphicon-minus-sign pull-right"></i></li>
+            </ul>
         </div>
         <div class="form-group"
              [class.campo_sucesso]="ipCpf.valid && (ipCpf.dirty || ipCpf.touched)"
              [class.campo_erro]="!ipCpf.valid && (ipCpf.dirty || ipCpf.touched)">
           <label for="inputSucess">Cpf: *</label>
-          <input #ipCpf="ngModel" required name="cpf" ngModel type="text" class="form-control" placeholder="Digite o Cpf">
+          <input #ipCpf="ngModel" [(ngModel)]="cliente.cpf" required name="cpf" ngModel type="text" class="form-control" placeholder="Digite o Cpf">
           <span class="bloco-erro" *ngIf="!ipCpf.valid && (ipCpf.dirty || ipCpf.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipCpf.valid && (ipCpf.dirty || ipCpf.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -61,7 +65,7 @@
              [class.campo_sucesso]="ipCep.valid && (ipCep.dirty || ipCep.touched)"
              [class.campo_erro]="!ipCep.valid && (ipCep.dirty || ipCep.touched)">
           <label for="inputSucess">Cep:</label>
-          <input #ipCep="ngModel" required name="cep" ngModel type="text" class="form-control"  placeholder="Cep">
+          <input #ipCep="ngModel" [(ngModel)]="cliente.cep" required name="cep" ngModel type="text" class="form-control"  placeholder="Cep">
           <span class="bloco-erro" *ngIf="!ipCep.valid && (ipCep.dirty || ipCep.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipCep.valid && (ipCep.dirty || ipCep.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -71,7 +75,7 @@
              [class.campo_sucesso]="ipLogradouro.valid && (ipLogradouro.dirty || ipLogradouro.touched)"
              [class.campo_erro]="!ipLogradouro.valid && (ipLogradouro.dirty || ipLogradouro.touched)">
           <label for="inputSucess">Logradouro: *</label>
-          <input #ipLogradouro="ngModel" required name="logradouro" ngModel type="text" class="form-control" aria-describedby="emailHelp" placeholder="Digite a logradouro...">
+          <input #ipLogradouro="ngModel" [(ngModel)]="cliente.logradouro" required name="logradouro" ngModel type="text" class="form-control" placeholder="Digite a logradouro...">
           <span class="bloco-erro" *ngIf="!ipLogradouro.valid && (ipLogradouro.dirty || ipLogradouro.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipLogradouro.valid && (ipLogradouro.dirty || ipLogradouro.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -79,7 +83,7 @@
              [class.campo_sucesso]="ipBairro.valid && (ipBairro.dirty || ipBairro.touched)"
              [class.campo_erro]="!ipBairro.valid && (ipBairro.dirty || ipBairro.touched)">
           <label for="inputSucess">Bairro: *</label>
-          <input #ipBairro="ngModel" required name="bairro" ngModel type="text"  class="form-control"  placeholder="Digite Bairro...">
+          <input #ipBairro="ngModel" [(ngModel)]="cliente.bairro" required name="bairro" ngModel type="text"  class="form-control"  placeholder="Digite Bairro...">
           <span class="bloco-erro" *ngIf="!ipBairro.valid && (ipBairro.dirty || ipBairro.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipBairro.valid && (ipBairro.dirty || ipBairro.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -87,7 +91,7 @@
              [class.campo_sucesso]="ipCidade.valid && (ipCidade.dirty || ipCidade.touched)"
              [class.campo_erro]="!ipCidade.valid && (ipCidade.dirty || ipCidade.touched)">
           <label for="inputSucess">Cidade: *</label>
-          <input #ipCidade="ngModel" required name="cidade" ngModel type="text" class="form-control" placeholder="Digite o nome da Cidade.">
+          <input #ipCidade="ngModel" [(ngModel)]="cliente.cidade" required name="cidade" ngModel type="text" class="form-control" placeholder="Digite o nome da Cidade.">
           <span class="bloco-erro" *ngIf="!ipCidade.valid && (ipCidade.dirty || ipCidade.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipCidade.valid && (ipCidade.dirty || ipCidade.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -95,19 +99,21 @@
              [class.campo_sucesso]="ipUf.valid && (ipUf.dirty || ipUf.touched)"
              [class.campo_erro]="!ipUf.valid && (ipUf.dirty || ipUf.touched)">
           <label for="inputSucess">Uf: *</label>
-          <input #ipUf="ngModel" name="uf" ngModel type="text" class="form-control" placeholder="Digite a Uf">
+          <input #ipUf="ngModel" [(ngModel)]="cliente.uf" name="uf" ngModel type="text" class="form-control" placeholder="Digite a Uf">
           <span class="bloco-erro" *ngIf="!ipUf.valid && (ipUf.dirty || ipUf.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipUf.valid && (ipUf.dirty || ipUf.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
         <div class="form-group">
           <label for="inputSucess">Complemento:</label>
-          <input name="complemento" ngModel type="text" class="form-control" id="inputSucess" placeholder="Digite o complemento">
+          <input name="complemento" [(ngModel)]="cliente.complemento" ngModel type="text" class="form-control" id="inputSucess" placeholder="Digite o complemento">
         </div>
       </div>
 
       <div class="col-lg-12">
-        <button (click)="cadastrar(form.value)" [disabled]="!form.valid" type="submit" class="btn btn-success">Cadastrar</button>
-        <button type="submit" [routerLink]="['/']" class="btn btn-info pull-right">Voltar</button>
+        <button *ngIf="!editar" (click)="cadastrar(form.value)" [disabled]="!form.valid" type="submit" class="btn btn-success">Cadastrar</button>
+        <button *ngIf="editar" (click)="atualizar(form.value)" [disabled]="!form.valid" type="submit" class="btn btn-success">Atualizar</button>
+        <button *ngIf="editar" (click)="cancelar()" type="submit" class="btn btn-success pull-right">Cancelar</button>
+        <button *ngIf="!editar" type="submit" [routerLink]="['/']" class="btn btn-info pull-right">Voltar</button>
       </div>
 
     </form>
@@ -148,7 +154,7 @@
       <td>{{cli.uf}}</td>
       <td>{{cli.complemento}}</td>
       <td>
-        <button type="button" class="btn btn-default" title="Editar">
+        <button (click)="editarCliente(cli)" type="button" class="btn btn-default" title="Editar">
           <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
         </button>
 

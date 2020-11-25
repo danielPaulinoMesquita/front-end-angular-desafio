@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Cliente, Telefone} from "./cliente.model";
 import {ClienteService} from "./cliente.service";
-import {catchError} from "rxjs/operators";
-import {tryCatch} from "rxjs/internal-compatibility";
 import Swal from 'sweetalert2';
 
 
@@ -19,16 +17,16 @@ export class ClienteComponent implements OnInit {
   clientes: Cliente[];
   cliente: Cliente;
   editar: boolean;
+
   telefoneRegex: (string | RegExp)[] = [];
+  telefones: Telefone[];
+  telefone: Telefone;
 
   tipos: string[] = [
     'RESIDENCIAL',
     'COMERCIAL',
     'CELULAR'
   ]
-
-  telefones: Telefone[];
-  telefone: Telefone;
 
   constructor(private clienteService: ClienteService) { }
 
@@ -38,52 +36,56 @@ export class ClienteComponent implements OnInit {
       this.clientes = response;
     })
 
-    this.telefones =[];
-    this.telefone = new Telefone();
-    this.telefoneRegex = this.TELEFONE_DEFAULT;
+    this.inicializarCliente();
+    this.inicializarTelefone();
   }
 
   cadastrar(cliente: Cliente){
-    this.telefones.forEach(tel => {
-      this.telefone = new Telefone();
-      this.telefone.numero = tel.numero;
-      this.telefone.tipo = tel.tipo;
-      this.cliente.telefones.push(this.telefone);
-    })
+    this.criarClienteSalvar(cliente);
 
-    console.log("Salvar o cliente: ",cliente);
-    // this.clienteService.clienteSalvar(cliente)
-    //   .subscribe(response => {
-    //     this.cliente= response;
-    //     this.clientes.push(this.cliente);
-    //     this.cliente= null;
-    //   })
-    Swal.fire(
-      'Sucesso',
-      'Cadastro feito com sucesso',
-      "success");
+    this.clienteService.clienteSalvar(this.cliente)
+      .subscribe((response) => {
+        this.cliente = response;
+        this.clientes.push(this.cliente);
+      })
+    this.mensagemAviso("Sucesso", "Cadastro feito com sucesso", "success");
 
+    this.cliente= new Cliente();
   }
 
   atualizar(cliente: Cliente){
+    this.criarClienteSalvar(cliente);
 
+    this.clienteService.clienteAtualizar(this.cliente)
+      .subscribe((response) => {
+        this.cliente = response;
+        this.clientes.push(this.cliente);
+      })
+    this.mensagemAviso("Sucesso", "Atualização feita com sucesso", "success");
+
+    this.editar = false;
+    this.cliente= new Cliente();
+  }
+
+  editarCliente(cliente: Cliente){
+    this.clienteService.clientesPorId(cliente.id)
+      .subscribe(response => {
+      this.cliente = response;
+      this.editar = true;
+    })
+
+    console.log("está em modo edição: ",this.editar);
+    console.log("cliente para edição: ", cliente);
   }
 
   deletar(cliente: Cliente) {
-
-    console.log("deletar o cliente: ",cliente)
-    Swal.fire(
-      'Deletado!',
-      'Seu cliente foi deletado e retirado da lista',
-      'success'
-    );
-    let indiceDoCliente = this.clientes.indexOf(cliente);
-    this.clientes.splice(indiceDoCliente, 1);
-    // this.clienteService.clienteDeletar(cliente.id)
-    //   .subscribe(() => {
-    //     let indiceDoCliente = this.clientes.indexOf(cliente);
-    //     this.clientes.splice(indiceDoCliente, 1);
-    //   });
+    this.clienteService
+      .clienteDeletar(cliente.id)
+      .subscribe(() => {
+        let indiceDoCliente = this.clientes.indexOf(cliente);
+        this.clientes.splice(indiceDoCliente, 1);
+        this.mensagemAviso("Deletado!", "Seu cliente foi deletado e retirado da lista","success");
+      });
   }
 
   confirmarDelete(cliente: Cliente){
@@ -98,25 +100,57 @@ export class ClienteComponent implements OnInit {
       if (result.value) {
         this.deletar(cliente);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelado',
-          'O cliente vai permanecer na lista',
-          'error'
-        )
+        this.mensagemAviso("Cancelado","O cliente vai permanecer na lista","error")
       }
     })
   }
 
+  cancelar(){
+     this.editar = false;
+     this.cliente = new Cliente();
+  }
+
+  mensagemAviso(titulo:string, msg:string, icon:any){
+    Swal.fire(titulo, msg, icon);
+  }
+
   adicionarTelefone(){
-      console.log(this.telefone)
-
-      this.telefones.push(this.telefone);
+      this.telefones.push(this.telefone)
       this.telefone = new Telefone();
+  }
 
+  inicializarTelefone(){
+    this.telefone = new Telefone();
+    this.telefones = [];
+    this.telefoneRegex = this.TELEFONE_DEFAULT;
+  }
+
+  inicializarCliente(){
+    this.editar = false;
+    this.cliente = new Cliente();
+  }
+
+  criarClienteSalvar(cliente): void {
+    this.cliente = new Cliente();
+    this.cliente.id = cliente.id;
+    this.cliente.nome = cliente.nome;
+    this.cliente.emails.push(cliente.email);
+    this.cliente.senha = cliente.senha;
+    this.cliente.cpf = cliente.cpf;
+    this.cliente.cep = cliente.cep;
+    this.cliente.bairro = cliente.bairro;
+    this.cliente.cidade = cliente.cidade;
+    this.cliente.logradouro = cliente.logradouro;
+    this.cliente.uf = cliente.uf;
+    this.cliente.complemento = cliente.complemento;
+
+    this.telefones.forEach(tel => {
+      this.cliente.telefones.push(tel);
+    })
   }
 
   mudarMascara(){
-    switch (this.telefone.tipo) {
+    switch (this.telefone.tipoTelefone) {
       case 'CELULAR':
         return this.TELEFONE_CELULAR;
         break;
@@ -125,21 +159,5 @@ export class ClienteComponent implements OnInit {
         break;
     }
   }
-
-/*
-
-referencia https://cursos.alura.com.br/forum/topico-adicionar-dados-de-um-formulario-em-um-array-angular-2-84397
-metodo para adicionar mais de um campo
-addAlternativa2() {
-    const control = <FormArray>this.formQuiz.controls['alternativas'];
-    control.push(this.initAlternativa());
-  }
-
-  outro metodo possivel
-  public addNewPerson(): void {
-    this.people = this.myForm.get('people') as FormArray
-    this.people.push(this.createPerson())
-}
- */
 
 }

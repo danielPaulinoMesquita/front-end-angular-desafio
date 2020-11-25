@@ -23,3 +23,8 @@ table .btn {
 select{
   padding: 7.6px;
 }
+
+li{
+  padding-top: 12px;
+  padding-right: 30px;
+}

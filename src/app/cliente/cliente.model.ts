@@ -1,6 +1,7 @@
 export class Cliente {
   id: string
   nome: string
+  senha: string
   cpf: string
   emails: string[]
   cep: number
@@ -13,16 +14,20 @@ export class Cliente {
   telefones: Telefone[]
 
   constructor() {
+    this.telefones = [];
+    this.emails = [];
   }
 
 }
 
 export class Telefone {
   numero: string
-  tipo: string
+  tipoTelefone: string
 
   constructor() {
-    this.tipo = "";
+    this.tipoTelefone = "";
     this.numero = "";
   }
+
 }
+

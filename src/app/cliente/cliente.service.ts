@@ -35,6 +35,10 @@ export class ClienteService {
     return this.http.post<Cliente>(`${this.URL}`, cliente);
   }
 
+  clienteAtualizar(cliente: Cliente): Observable<Cliente> {
+    return this.http.put<Cliente>(`${this.URL}/${cliente.id}`, cliente);
+  }
+
   clienteDeletar(id){
     return this.http.delete(`${this.URL}/${id}`);
   }
