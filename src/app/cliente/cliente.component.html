@@ -17,15 +17,27 @@
           <span class="bloco-sucesso" *ngIf="ipNome.valid && (ipNome.dirty || ipNome.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
         <div class="form-group"
-             [class.campo_sucesso]="ipEmail.valid && (ipEmail.dirty || ipEmail.touched)"
-             [class.campo_erro]="!ipEmail.valid && (ipEmail.dirty || ipEmail.touched)">
+             [class.campo_sucesso]="emails.length>0 && (ipEmail.dirty || ipEmail.touched)"
+             [class.campo_erro]="emails.length===0 && (ipEmail.dirty || ipEmail.touched)">
           <label for="inputSucess">Email:</label>
-          <input required #ipEmail="ngModel" name="email" ngModel  type="email" class="form-control" aria-describedby="emailHelp"
-                 placeholder="Digite seu email"
-                 pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
-          <span class="bloco-erro" *ngIf="!ipEmail.valid && (ipEmail.dirty || ipEmail.touched)"><i class="glyphicon glyphicon-remove"></i> Digite um email válido</span>
-          <span class="bloco-sucesso" *ngIf="ipEmail.valid && (ipEmail.dirty || ipEmail.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
+          <div class="input-group">
+            <input  #ipEmail="ngModel" [(ngModel)]="email" name="email" ngModel  type="email" class="form-control" aria-describedby="emailHelp"
+                   placeholder="Digite seu email"
+                   pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
+            <div class="input-group-btn">
+              <button (click)="adicionarEmail()" class="btn btn-default" type="button">
+                <i class="glyphicon glyphicon-plus"></i>
+              </button>
+            </div>
+          </div>
+          <ul *ngFor="let email of emails">
+            <li>{{email}}<i (click)="retirarEmail(email)" class="glyphicon glyphicon-minus-sign pull-right cursor"></i></li>
+          </ul>
+          <span class="bloco-erro" *ngIf="(!ipEmail.valid && emails.length===0) && (ipEmail.dirty || ipEmail.touched)"><i class="glyphicon glyphicon-remove"></i> Digite um email válido</span>
+          <span class="bloco-erro" *ngIf="emails.length===0 && (ipEmail.dirty || ipEmail.touched)"><i class="glyphicon glyphicon-remove"></i> Deve ter ao menos um email cadastrado</span>
+          <span class="bloco-sucesso" *ngIf="emails.length>0 && (ipEmail.dirty || ipEmail.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
+
         <div class="form-group">
           <label for="inputSucess">Senha: *</label>
           <input name="senha" [(ngModel)]="cliente.senha" ngModel type="password" class="form-control" placeholder="Senha">

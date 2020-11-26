@@ -30,6 +30,7 @@ export class ClienteComponent implements OnInit {
   ]
 
   emails:string[];
+  email:string = "";
 
   constructor(private clienteService: ClienteService) { }
 
@@ -144,8 +145,8 @@ export class ClienteComponent implements OnInit {
   }
 
   adicionarEmail(){
-    this.telefones.push(this.telefone)
-    this.telefone = new Telefone();
+    this.emails.push(this.email);
+    this.email = "";
   }
 
   retirarEmail(email: string){
@@ -162,6 +163,7 @@ export class ClienteComponent implements OnInit {
   inicializarCliente(){
     this.editar = false;
     this.cliente = new Cliente();
+    this.emails = [];
   }
 
   criarClienteSalvar(cliente): void {
@@ -205,8 +207,8 @@ export class ClienteComponent implements OnInit {
         this.cliente.complemento = res.complemento;
         this.cliente.bairro = res.bairro;
         this.cliente.uf = res.uf;
+        this.cliente.cidade = res.localidade;
       })
     }
   }
-
 }
