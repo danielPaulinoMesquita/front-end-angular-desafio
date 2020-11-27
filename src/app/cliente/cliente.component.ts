@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Cliente, Telefone} from "./cliente.model";
 import {ClienteService} from "./cliente.service";
 import Swal from 'sweetalert2';
-import {map} from "rxjs/operators";
+import {LoginService} from "../security/login/login.service";
+import {Usuario} from "../security/login/usuario.model";
 
 
 @Component({
@@ -32,13 +33,18 @@ export class ClienteComponent implements OnInit {
   emails:string[];
   email:string = "";
 
-  constructor(private clienteService: ClienteService) { }
+  usuario: Usuario;
+
+  constructor(private clienteService: ClienteService, private loginService: LoginService) { }
 
   ngOnInit() {
     this.clienteService.clientes()
       .subscribe(response =>{
       this.clientes = response;
     })
+
+    this.usuario = this.loginService.usuarioLogado();
+    console.log(this.usuario)
 
     this.inicializarCliente();
     this.inicializarTelefone();
@@ -198,7 +204,6 @@ export class ClienteComponent implements OnInit {
   }
 
   buscarEnderecoCep(event: any){
-
     let cep = event.target.value;
 
     if(cep.length ===8){
@@ -209,6 +214,12 @@ export class ClienteComponent implements OnInit {
         this.cliente.uf = res.uf;
         this.cliente.cidade = res.localidade;
       })
+    }
+  }
+
+  autenticadoAdmin(): boolean{
+    if(this.usuario){
+      return this.usuario.perfil === "ADMIN";
     }
   }
 }

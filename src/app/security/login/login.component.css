@@ -1,3 +1,11 @@
+.bloco-erro{
+  color: rgba(173, 32, 8, 0.93);
+}
+
+.bloco-sucesso{
+  color: green;
+}
+
 .login-logo,
 .register-logo {
   font-size: 35px;

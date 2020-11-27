@@ -16,6 +16,7 @@ import {ClienteService} from "./cliente/cliente.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {TextMaskModule} from "angular2-text-mask";
+import {LoginService} from "./security/login/login.service";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import {TextMaskModule} from "angular2-text-mask";
     ModalModule.forRoot(),
     RouterModule.forRoot(ROUTES, {preloadingStrategy: PreloadAllModules}),
   ],
-  providers: [ClienteService],
+  providers: [ClienteService, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
