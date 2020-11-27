@@ -53,7 +53,7 @@
                 </option>
               </select>
             </div>
-            <input name="numero" [(ngModel)]="telefone.numero" type="text" class="form-control"
+            <input #ipTelefone= "ngModel" name="numero" [(ngModel)]="telefone.numero" type="text" class="form-control"
                    placeholder="Digite o telefone." [textMask]="{mask: mudarMascara()}">
             <div class="input-group-btn">
               <button (click)="adicionarTelefone()" class="btn btn-default" type="button">
@@ -64,12 +64,15 @@
             <ul *ngFor="let tel of telefones">
               <li>{{tel.tipoTelefone}}: {{tel.numero}}<i (click)="retirarTelefone(tel)" class="glyphicon glyphicon-minus-sign pull-right cursor"></i></li>
             </ul>
+          <span class="bloco-erro" *ngIf="(!ipTelefone.valid && emails.length===0) && (ipTelefone.dirty || ipTelefone.touched)"><i class="glyphicon glyphicon-remove"></i> Digite um telefone válido</span>
+          <span class="bloco-erro" *ngIf="telefones.length===0 && (ipTelefone.dirty || ipTelefone.touched)"><i class="glyphicon glyphicon-remove"></i> Deve ter ao menos um telefone cadastrado</span>
+          <span class="bloco-sucesso" *ngIf="telefones.length>0 && (ipTelefone.dirty || ipTelefone.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
         <div class="form-group"
              [class.campo_sucesso]="ipCpf.valid && (ipCpf.dirty || ipCpf.touched)"
              [class.campo_erro]="!ipCpf.valid && (ipCpf.dirty || ipCpf.touched)">
           <label for="inputSucess">Cpf: *</label>
-          <input #ipCpf="ngModel" [(ngModel)]="cliente.cpf" required name="cpf" ngModel type="text" class="form-control" placeholder="Digite o Cpf">
+          <input #ipCpf="ngModel" [(ngModel)]="cliente.cpf" required name="cpf" ngModel type="text" class="form-control" placeholder="Digite o Cpf" [textMask]="{mask: CPF}">
           <span class="bloco-erro" *ngIf="!ipCpf.valid && (ipCpf.dirty || ipCpf.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipCpf.valid && (ipCpf.dirty || ipCpf.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -77,7 +80,7 @@
              [class.campo_sucesso]="ipCep.valid && (ipCep.dirty || ipCep.touched)"
              [class.campo_erro]="!ipCep.valid && (ipCep.dirty || ipCep.touched)">
           <label for="inputSucess">Cep:</label>
-          <input (keyup)="buscarEnderecoCep($event)" #ipCep="ngModel" [(ngModel)]="cliente.cep" required name="cep" ngModel type="text" class="form-control"  placeholder="Cep">
+          <input (keyup)="buscarEnderecoCep($event)" #ipCep="ngModel" [(ngModel)]="cliente.cep" required name="cep" ngModel type="text" class="form-control"  placeholder="Cep" [textMask]="{mask: CEP}">
           <span class="bloco-erro" *ngIf="!ipCep.valid && (ipCep.dirty || ipCep.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipCep.valid && (ipCep.dirty || ipCep.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>

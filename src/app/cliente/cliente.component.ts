@@ -15,6 +15,9 @@ export class ClienteComponent implements OnInit {
 
   TELEFONE_DEFAULT = ['(', /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   TELEFONE_CELULAR = ['(', /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  CEP = [/\d/, /\d/, '.' ,/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  CPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/,'-',/\d/, /\d/];
+  SUBSTITUIR_CARACTERES = /\D+/g;
 
   clientes: Cliente[];
   cliente: Cliente;
@@ -134,6 +137,8 @@ export class ClienteComponent implements OnInit {
   cancelar(){
      this.editar = false;
      this.cliente = new Cliente();
+     this.telefones = [];
+     this.emails = [];
   }
 
   mensagemAviso(titulo:string, msg:string, icon:any){
@@ -141,7 +146,9 @@ export class ClienteComponent implements OnInit {
   }
 
   adicionarTelefone(){
+    if (!(this.telefone.numero === "")) {
       this.telefones.push(this.telefone)
+    }
       this.telefone = new Telefone();
   }
 
@@ -190,6 +197,12 @@ export class ClienteComponent implements OnInit {
     this.telefones.forEach(tel => {
       this.cliente.telefones.push(tel);
     })
+
+    this.emails.forEach(email => {
+      this.cliente.emails.push(email);
+    })
+
+    this.retirarMascaras();
   }
 
   mudarMascara(){
@@ -203,8 +216,27 @@ export class ClienteComponent implements OnInit {
     }
   }
 
+  retirarMascaras(){
+    if(this.cliente.telefones !== null && this.cliente.telefones !== undefined){
+      this.cliente.telefones.forEach(tel => {
+        tel.numero.replace(/\D+/g, '');
+      });
+
+      console.log(this.cliente.telefones)
+    }
+
+    if(this.cliente.cpf !== null && this.cliente.cpf !== undefined){
+        this.cliente.cpf = this.cliente.cpf.replace(this.SUBSTITUIR_CARACTERES,'');
+    }
+
+    if(this.cliente.cep !== null && this.cliente.cpf !== undefined){
+      this.cliente.cep = this.cliente.cep.replace(this.SUBSTITUIR_CARACTERES, '');
+    }
+  }
+
   buscarEnderecoCep(event: any){
-    let cep = event.target.value;
+    let cep = event.target.value.replace(this.SUBSTITUIR_CARACTERES,'');
+    console.log(cep)
 
     if(cep.length ===8){
       this.clienteService.cepPesquisar(cep).subscribe(res =>{
