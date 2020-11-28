@@ -2,10 +2,6 @@
   <div *ngIf="!editar" class="panel-heading">Cadastro Cliente</div>
   <div *ngIf="editar" class="panel-heading">Edição Cliente</div>
   <div class="panel-body">
-    {{form.valid}}
-    {{form.value | json}}
-    {{telefones | json}}
-    {{telefoneRegex}}
     <form #form="ngForm" novalidate>
       <div class="col-md-6">
         <div class="form-group"

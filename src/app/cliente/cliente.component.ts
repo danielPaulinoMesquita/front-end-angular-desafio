@@ -76,10 +76,10 @@ export class ClienteComponent implements OnInit {
           }
           return  cli;
         });
+        this.inicializarCliente()
+        this.inicializarTelefone();
+        this.mensagemAviso("Sucesso", "Atualização feita com sucesso", "success");
     })
-    this.inicializarCliente()
-    this.inicializarTelefone();
-    this.mensagemAviso("Sucesso", "Atualização feita com sucesso", "success");
   }
 
   editarCliente(cliente: Cliente){
