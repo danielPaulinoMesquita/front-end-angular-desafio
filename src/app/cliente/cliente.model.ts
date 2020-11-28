@@ -10,11 +10,15 @@ export class Cliente {
   cidade: string
   uf: string
   complemento: string
-  perfis: string[]
   telefones: Telefone[]
 
   constructor() {
     this.cep = "";
+    this.logradouro = "";
+    this.bairro = "";
+    this.cidade = "";
+    this.uf = "";
+    this.complemento = "";
     this.telefones = [];
     this.emails = [];
   }
@@ -22,6 +26,7 @@ export class Cliente {
 }
 
 export class Telefone {
+  id: number
   numero: string
   tipoTelefone: string
 

@@ -60,38 +60,28 @@ export class ClienteComponent implements OnInit {
       .subscribe((response) => {
         this.cliente = response;
         this.clientes.push(this.cliente);
+        this.inicializarCliente();
+        this.inicializarTelefone();
+        this.mensagemAviso("Sucesso", "Cadastro feito com sucesso", "success");
       })
-    this.mensagemAviso("Sucesso", "Cadastro feito com sucesso", "success");
-
-    this.cliente= new Cliente();
   }
 
   atualizar(cliente: Cliente){
     this.criarClienteSalvar(cliente);
-
-    this.clientes = this.clientes.map(cli => {
-      if (cli.id === this.cliente.id){
-        return cli = this.cliente;
-      }
-      return cli;
-    });
 
     this.clienteService.clienteAtualizar(this.cliente)
       .subscribe((response) => {
         this.cliente = response;
         this.clientes = this.clientes.map(cli => {
           if (cli.id === this.cliente.id){
-            return cli = this.cliente;
+             cli = this.cliente;
           }
-          return cli;
+          return  cli;
         });
-        this.editar = false;
-
     })
-    this.mensagemAviso("Sucesso", "Atualização feita com sucesso", "success");
-
-    this.inicializarTelefone();
     this.inicializarCliente()
+    this.inicializarTelefone();
+    this.mensagemAviso("Sucesso", "Atualização feita com sucesso", "success");
   }
 
   editarCliente(cliente: Cliente){
@@ -102,9 +92,6 @@ export class ClienteComponent implements OnInit {
       this.emails = this.cliente.emails;
       this.editar = true;
     })
-
-    console.log("está em modo edição: ",this.editar);
-    console.log("cliente para edição: ", cliente);
   }
 
   deletar(cliente: Cliente) {
@@ -146,7 +133,7 @@ export class ClienteComponent implements OnInit {
   }
 
   adicionarTelefone(){
-    if (!(this.telefone.numero === "")) {
+    if (this.telefone.numero !== "") {
       this.telefones.push(this.telefone)
     }
       this.telefone = new Telefone();
@@ -158,7 +145,9 @@ export class ClienteComponent implements OnInit {
   }
 
   adicionarEmail(){
-    this.emails.push(this.email);
+    if (this.email !== "") {
+      this.emails.push(this.email);
+    }
     this.email = "";
   }
 
@@ -184,7 +173,6 @@ export class ClienteComponent implements OnInit {
       this.cliente = new Cliente();
     }
     this.cliente.nome = cliente.nome;
-    this.cliente.emails.push(cliente.email);
     this.cliente.senha = cliente.senha;
     this.cliente.cpf = cliente.cpf;
     this.cliente.cep = cliente.cep;
@@ -194,13 +182,21 @@ export class ClienteComponent implements OnInit {
     this.cliente.uf = cliente.uf;
     this.cliente.complemento = cliente.complemento;
 
-    this.telefones.forEach(tel => {
-      this.cliente.telefones.push(tel);
-    })
+    if(!this.editar){
+      this.telefones.forEach(tel => {
+        this.cliente.telefones.push(tel);
+      })
+    } else {
+      this.cliente.telefones = this.telefones;
+    }
 
-    this.emails.forEach(email => {
-      this.cliente.emails.push(email);
-    })
+    if(!this.editar){
+      this.emails.forEach(email => {
+        this.cliente.emails.push(email);
+      })
+    } else {
+      this.cliente.emails = this.emails;
+    }
 
     this.retirarMascaras();
   }
@@ -218,8 +214,12 @@ export class ClienteComponent implements OnInit {
 
   retirarMascaras(){
     if(this.cliente.telefones !== null && this.cliente.telefones !== undefined){
-      this.cliente.telefones.forEach(tel => {
-        tel.numero.replace(/\D+/g, '');
+      this.cliente.telefones = this.cliente.telefones.map(tel => {
+        let telefone = new Telefone();
+        telefone.id = tel.id;
+        telefone.tipoTelefone = tel.tipoTelefone;
+        telefone.numero = tel.numero.replace(this.SUBSTITUIR_CARACTERES, '');
+        return telefone;
       });
 
       console.log(this.cliente.telefones)

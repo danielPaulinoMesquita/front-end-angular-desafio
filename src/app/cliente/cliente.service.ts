@@ -19,7 +19,7 @@ export class ClienteService {
     return this.http.get<Cliente>(`${this.URL}/${id}`)
   }
 
-  clienteSalvar(cliente: Cliente): Observable<Cliente> {
+  clienteSalvar(cliente: Cliente): Observable<any> {
     return this.http.post<Cliente>(`${this.URL}`, cliente);
   }
 
