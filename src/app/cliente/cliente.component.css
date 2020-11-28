@@ -27,6 +27,13 @@ table .btn {
  color:red;
 }
 
+.cursor-table {
+ cursor:pointer;
+}
+.cursor:hover {
+ color:darkslategrey;
+}
+
 select{
   padding: 7.6px;
 }

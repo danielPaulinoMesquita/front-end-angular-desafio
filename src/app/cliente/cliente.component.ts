@@ -47,8 +47,6 @@ export class ClienteComponent implements OnInit {
     })
 
     this.usuario = this.loginService.usuarioLogado();
-    console.log(this.usuario)
-
     this.inicializarCliente();
     this.inicializarTelefone();
   }
@@ -173,7 +171,6 @@ export class ClienteComponent implements OnInit {
       this.cliente = new Cliente();
     }
     this.cliente.nome = cliente.nome;
-    this.cliente.senha = cliente.senha;
     this.cliente.cpf = cliente.cpf;
     this.cliente.cep = cliente.cep;
     this.cliente.bairro = cliente.bairro;
@@ -222,7 +219,6 @@ export class ClienteComponent implements OnInit {
         return telefone;
       });
 
-      console.log(this.cliente.telefones)
     }
 
     if(this.cliente.cpf !== null && this.cliente.cpf !== undefined){
@@ -236,7 +232,6 @@ export class ClienteComponent implements OnInit {
 
   buscarEnderecoCep(event: any){
     let cep = event.target.value.replace(this.SUBSTITUIR_CARACTERES,'');
-    console.log(cep)
 
     if(cep.length ===8){
       this.clienteService.cepPesquisar(cep).subscribe(res =>{

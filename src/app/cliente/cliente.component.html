@@ -39,10 +39,6 @@
         </div>
 
         <div class="form-group">
-          <label for="inputSucess">Senha: *</label>
-          <input name="senha" [(ngModel)]="cliente.senha" ngModel type="password" class="form-control" placeholder="Senha">
-        </div>
-        <div class="form-group">
           <label for="inputSucess">Telefones: *</label>
           <div class="input-group">
             <div class="input-group-btn">
@@ -114,7 +110,7 @@
              [class.campo_sucesso]="ipUf.valid && (ipUf.dirty || ipUf.touched)"
              [class.campo_erro]="!ipUf.valid && (ipUf.dirty || ipUf.touched)">
           <label for="inputSucess">Uf: *</label>
-          <input #ipUf="ngModel" [(ngModel)]="cliente.uf" name="uf" ngModel type="text" class="form-control" placeholder="Digite a Uf">
+          <input required #ipUf="ngModel" [(ngModel)]="cliente.uf" name="uf" ngModel type="text" class="form-control" placeholder="Digite a Uf">
           <span class="bloco-erro" *ngIf="!ipUf.valid && (ipUf.dirty || ipUf.touched)"><i class="glyphicon glyphicon-remove"></i> campo obrigatório</span>
           <span class="bloco-sucesso" *ngIf="ipUf.valid && (ipUf.dirty || ipUf.touched)"><i class="glyphicon glyphicon-ok"></i> Ok</span>
         </div>
@@ -159,9 +155,9 @@
     </thead>
     <tbody>
     <tr *ngFor="let cli of clientes">
-      <td>{{cli.nome}}</td>
+      <td class="cursor" [routerLink]="['/cliente-detail',cli.id]">{{cli.nome}}</td>
       <td>{{cli.cpf}}</td>
-      <td>{{cli.emails}}</td>
+      <td>{{cli.emails[0]}}</td>
       <td>{{cli.cep}}</td>
       <td>{{cli.logradouro}}</td>
       <td>{{cli.bairro}}</td>

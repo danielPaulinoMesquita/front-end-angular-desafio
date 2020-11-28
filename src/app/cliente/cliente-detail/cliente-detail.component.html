@@ -1,0 +1,81 @@
+<div class="page-header">
+  <h1>{{clienteDetail?.nome}}</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation" [class.active]="!(contatos || endereco)"><a (click)="mudarNav('home')" >Home</a></li>
+  <li role="presentation" [class.active]="contatos"><a (click)="mudarNav('contatos')">Contatos</a></li>
+  <li role="presentation" [class.active]="endereco"><a (click)="mudarNav('endereco')">Endereço</a></li>
+</ul>
+<br/>
+
+<div *ngIf="!(contatos || endereco)">
+  <div class="panel panel-primary">
+    <div class="panel-heading">Informações Básicas </div>
+
+    <div class="panel-body">
+      <strong>Nome:</strong> {{this.clienteDetail?.nome}}
+    </div>
+    <div class="panel-body">
+      <strong>Cpf:</strong> {{this.clienteDetail?.cpf}}
+    </div>
+    <div class="panel-body">
+      <strong>Cidade:</strong> {{this.clienteDetail?.cidade}}
+    </div>
+    <div class="panel-body">
+      <strong>Telefone:</strong> {{this.telefone || 'Não informado'}}
+    </div>
+    <div class="panel-body">
+      <strong>Email:</strong> {{this.email || 'Não informado'}}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="contatos">
+  <div class="panel panel-info">
+    <div class="panel-heading">Emails: </div>
+    <div class="panel-body">
+      <div class="list-group" *ngFor="let email of clienteDetail.emails">
+        <a class="list-group-item">{{email}}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Telefones</h3>
+    </div>
+    <div class="panel-body">
+      <div class="list-group" *ngFor="let tel of clienteDetail.telefones">
+        <a class="list-group-item"><strong>{{tel.tipoTelefone}}</strong> {{tel.numero}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="endereco">
+  <div class="panel panel-default">
+    <div class="panel-heading">Endereço </div>
+    <div class="panel-body">
+      <strong>Cidade:</strong> {{this.clienteDetail.cidade}}
+    </div>
+    <div class="panel-body">
+      <strong>Logradouro:</strong> {{this.clienteDetail.logradouro}}
+    </div>
+    <div class="panel-body">
+      <strong>Bairro:</strong> {{this.clienteDetail.bairro}}
+    </div>
+    <div class="panel-body">
+      <strong>Complemento:</strong> {{this.clienteDetail.complemento || 'Não informado'}}
+    </div>
+    <div class="panel-body">
+      <strong>Uf:</strong> {{this.clienteDetail.uf}}
+    </div>
+    <div class="panel-body">
+      <strong>Cep:</strong> {{this.clienteDetail.cep}}
+    </div>
+  </div>
+</div>
+<button type="submit" [routerLink]="['/cliente']" class="btn btn-info">Voltar</button>
+
+
+

@@ -1,7 +1,6 @@
 export class Cliente {
   id: number
   nome: string
-  senha: string
   cpf: string
   emails: string[]
   cep: string
